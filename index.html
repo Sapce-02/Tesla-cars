@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tesla • Invest & Shop</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">T E S L A</div>
+        <div class="nav-links">
+            <a href="#" id="navLogin">LOG IN</a>
+            <a href="#" id="navMenu"><i class="fas fa-bars"></i></a>
+        </div>
+    </nav>
+
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <div class="logo">T E S L A</div>
+            <span class="close-menu" id="closeMenu">&times;</span>
+        </div>
+        <div class="side-menu-links">
+            <a href="#" id="menuLogin"><i class="fas fa-sign-in-alt"></i> LOG IN</a>
+            <a href="#" id="menuSignup"><i class="fas fa-user-plus"></i> SIGN UP</a>
+        </div>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <section class="hero-section" id="investHero">
+        <div class="hero-content">
+            <p class="sub-label">INVESTMENTS</p>
+            <h1 class="hero-title">INVEST</h1>
+            <p class="hero-desc">Grow your money with smart, managed investment plans.</p>
+            <button class="btn-primary" id="btnInvest">INVEST NOW</button>
+        </div>
+    </section>
+
+    <section class="intro-section">
+        <div class="intro-container">
+            <p class="intro-tag">OUR MISSION</p>
+            <h2 class="intro-title">Driving the Future of<br>Electric Performance</h2>
+            <p class="intro-text">
+                At Tesla, we are building the world's most advanced electric vehicles. From the daily-driver Model 3 
+                to the record-breaking Model S Plaid, every car we build is engineered to be the safest, fastest, 
+                and most efficient in its class. We are not just making cars — we are accelerating the world's 
+                transition to sustainable energy.
+            </p>
+        </div>
+
+        <div class="features-grid">
+            <div class="feature-card">
+                <i class="fas fa-bolt"></i>
+                <h4>Instant Torque</h4>
+                <p>0-60 mph in as fast as 1.99 seconds with dual or tri-motor all-wheel drive.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-battery-full"></i>
+                <h4>Long Range</h4>
+                <p>Up to 405 miles of range on a single charge with our next-gen battery technology.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-shield-alt"></i>
+                <h4>5-Star Safety</h4>
+                <p>Every Tesla achieves top safety ratings with an all-electric architecture.</p>
+            </div>
+            <div class="feature-card">
+                <i class="fas fa-charging-station"></i>
+                <h4>Supercharger Network</h4>
+                <p>Access over 60,000 Superchargers worldwide for fast, reliable charging.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="pre-shop-section">
+        <p class="intro-tag">BUILT FOR EVERY ROAD</p>
+        <h2 class="pre-shop-title">Find the Tesla That Fits Your Life</h2>
+        <p class="intro-text">
+            Whether you need a family SUV, a daily commuter, or a hypercar-killer, there is a Tesla designed 
+            for you. Explore our full lineup of electric vehicles — each one built with the same obsession for 
+            performance, safety, and sustainability.
+        </p>
+    </section>
+
+    <section class="hero-section dark-overlay" id="shopHero">
+        <div class="hero-content">
+            <p class="sub-label">VEHICLES</p>
+            <h1 class="hero-title">SHOP</h1>
+            <p class="hero-desc">Browse and buy the world's best electric and performance cars.</p>
+            <button class="btn-primary" id="btnShop">VIEW CARS</button>
+        </div>
+    </section>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom:15px;">T E S L A</div>
+                <p class="footer-text">
+                    Accelerating the world's transition to sustainable energy through innovative electric vehicles, 
+                    solar technology, and clean energy storage.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h5>COMPANY</h5>
+                <a href="#">About</a>
+                <a href="#">Careers</a>
+                <a href="#">Investors</a>
+                <a href="#">Sustainability</a>
+            </div>
+            <div class="footer-col">
+                <h5>VEHICLES</h5>
+                <a href="#">Model S</a>
+                <a href="#">Model 3</a>
+                <a href="#">Model X</a>
+                <a href="#">Model Y</a>
+                <a href="#">Cybertruck</a>
+            </div>
+            <div class="footer-col">
+                <h5>SUPPORT</h5>
+                <a href="#">Contact</a>
+                <a href="#">Find a Store</a>
+                <a href="#">Roadside Assistance</a>
+                <a href="#">Warranty</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Tesla, Inc. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="#">Privacy</a>
+                <a href="#">Terms</a>
+                <a href="#">Cookies</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- LOGIN MODAL -->
+    <div class="modal-overlay" id="loginModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeLogin">&times;</span>
+            <h2>Sign In</h2>
+            <form id="loginForm">
+                <div class="input-group"><input type="email" id="loginEmail" placeholder="Email" required></div>
+                <div class="input-group"><input type="password" id="loginPassword" placeholder="Password" required></div>
+                <button type="submit" class="btn-primary btn-block" id="loginSubmitBtn">LOG IN</button>
+            </form>
+            <p class="switch-auth">Don't have an account? <a href="#" id="showSignup">Sign Up</a></p>
+        </div>
+    </div>
+
+    <!-- SIGNUP MODAL -->
+    <div class="modal-overlay" id="signupModal">
+        <div class="modal-content">
+            <span class="close-btn" id="closeSignup">&times;</span>
+            <h2>Create Account</h2>
+            <form id="signupForm">
+                <div class="input-group"><input type="text" id="regName" placeholder="Full Name" required></div>
+                <div class="input-group"><input type="email" id="regEmail" placeholder="Email" required></div>
+                <div class="input-group"><input type="password" id="regPassword" placeholder="Password" required></div>
+                <div class="input-group"><input type="text" id="regState" placeholder="State" required></div>
+                <div class="input-group"><input type="text" id="regPostal" placeholder="Postal Code" required></div>
+                <div class="input-group">
+                    <label class="input-label">Date of Birth</label>
+                    <input type="date" id="regDob" required>
+                </div>
+                <button type="submit" class="btn-primary btn-block" id="signupSubmitBtn">SIGN UP</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- UNIVERSAL ANIMATED MODAL -->
+    <div class="modal-overlay" id="universalModal">
+        <div class="modal-content universal-modal" id="universalModalContent">
+            <div class="universal-icon" id="universalIcon"><i class="fas fa-info-circle"></i></div>
+            <h3 class="universal-title" id="universalTitle">Title</h3>
+            <p class="universal-text" id="universalText">Message</p>
+            <div class="universal-actions" id="universalActions"></div>
+        </div>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- FIREBASE SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+
+    <script src="script.js"></script>
+    
+    <!--Start of Tawk.to Script-->
+    <script type="text/javascript">
+    var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+    (function(){
+    var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+    s1.async=true;
+    s1.src='https://embed.tawk.to/6ab1ec50e43bda343f3cf336/default';
+    s1.charset='UTF-8';
+    s1.setAttribute('crossorigin','*');
+    s0.parentNode.insertBefore(s1,s0);
+    })();
+    </script>
+    <!--End of Tawk.to Script-->
+</body>
+</html>

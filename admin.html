@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tesla Admin • Control Panel</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+    :root { 
+        --black:#050505; 
+        --dark:#111111; 
+        --panel:#161616; 
+        --border:#2a2a2a; 
+        --text:#e0e0e0; 
+        --text-dim:#888888; 
+        --green:#00ff88; 
+        --red:#ff4444; 
+        --gold:#ffaa00; 
+        --blue:#7ea8d8;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; font-family:'Inter',sans-serif; }
+    body { background: var(--black); color: var(--text); padding: 0; min-height: 100vh; }
+    .hidden { display:none !important; }
+    
+    #loginGate { 
+        max-width: 400px; width: 90%; margin: 0 auto; position: absolute;
+        top: 50%; left: 50%; transform: translate(-50%, -50%);
+        background: var(--panel); padding: 40px 30px; border-radius: 20px; 
+        border: 1px solid var(--border); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+    }
+    #loginGate h2 { font-size: 1.6rem; margin-bottom: 8px; letter-spacing: 1px; }
+    #loginGate .sub { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 25px; }
+    input { width:100%; padding:14px 16px; margin-bottom:16px; background: #0a0a0a; border:1px solid #333; color:var(--white); border-radius:10px; outline:none; font-size: 0.9rem; transition: 0.3s; }
+    input:focus { border-color: #555; background: #111; }
+    .btn { background:var(--white); color:var(--black); border:none; padding:14px 25px; font-weight:700; border-radius:10px; cursor:pointer; transition:0.3s; font-size: 0.9rem; letter-spacing: 1px; }
+    .btn:hover { background:#ddd; transform: scale(1.02); }
+    .btn-block { width:100%; }
+    .btn-outline { background:transparent; border:1px solid var(--border); color:var(--white); }
+    .btn-outline:hover { background:var(--white); color:var(--black); border-color: var(--white); }
+    
+    .wrap { max-width: 1300px; margin: 0 auto; padding: 40px 20px; }
+    .header { display:flex; justify-content:space-between; align-items:center; margin-bottom:35px; flex-wrap:wrap; gap:20px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+    .header h1 { font-size:1.6rem; letter-spacing: 1px; display: flex; align-items: center; gap: 12px; }
+    
+    .stats { display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:20px; margin-bottom:40px; }
+    .stat { background: linear-gradient(145deg, #141414, #1a1a1a); border:1px solid var(--border); padding:22px; border-radius:16px; transition: 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+    .stat:hover { border-color: #444; transform: translateY(-3px); }
+    .stat .lbl { font-size:0.75rem; color:var(--text-dim); text-transform:uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block;}
+    .stat .val { font-size:1.8rem; font-weight:700; color: var(--white); }
+    .stat .val.gold { color: var(--gold); }
+    
+    h3 { font-size:1.1rem; margin:35px 0 15px; color:#ddd; display: flex; align-items: center; gap: 10px; letter-spacing: 0.5px; }
+    h3 i { color: var(--text-dim); font-size: 0.9rem; }
+    
+    .table-wrap { background: var(--panel); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 30px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+    table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+    th, td { padding:16px 18px; text-align:left; border-bottom:1px solid var(--border); }
+    th { background: #0f0f0f; color:var(--text-dim); font-size:0.7rem; text-transform:uppercase; font-weight: 600; letter-spacing: 1px; white-space: nowrap; }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: #1a1a1a; }
+    
+    .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+    .actions button { border:none; padding:6px 12px; border-radius:20px; font-size:0.7rem; font-weight:700; cursor:pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+    .actions button:hover { transform: scale(1.08); }
+    
+    .approve { background: #0f2420; color: var(--green); border: 1px solid #1e4a3f; }
+    .approve:hover { background: #16332c; }
+    .block { background: #251616; color: var(--red); border: 1px solid #4a2a28; }
+    .block:hover { background: #331d1c; }
+    .credit { background: #151d2b; color: var(--blue); border: 1px solid #263a56; }
+    .credit:hover { background: #1d283b; }
+    .debit { background: #251d15; color: var(--gold); border: 1px solid #4a3a26; }
+    .debit:hover { background: #332a1e; }
+    
+    .btn-stocks-add { background: #0f2418; color: #7ed88d; border: 1px solid #1e4a2e; }
+    .btn-stocks-add:hover { background: #153321; }
+    .btn-stocks-rem { background: #241515; color: #d87e7e; border: 1px solid #4a1e1e; }
+    .btn-stocks-rem:hover { background: #331d1d; }
+    
+    .btn-invest-add { background: #151d2b; color: #8d7ed8; border: 1px solid #261e4a; }
+    .btn-invest-add:hover { background: #1d1533; }
+    .btn-invest-rem { background: #241515; color: #d87e7e; border: 1px solid #4a1e1e; }
+    .btn-invest-rem:hover { background: #331d1d; }
+
+    .status-pill { padding:4px 12px; border-radius:20px; font-size:0.7rem; font-weight:600; letter-spacing: 0.5px; white-space: nowrap; }
+    .status-pill.pending { background:#251d15; color:var(--gold); border: 1px solid #4a3a26; }
+    .status-pill.approved { background:#0f2420; color:var(--green); border: 1px solid #1e4a3f; }
+    .status-pill.blocked { background:#251616; color:var(--red); border: 1px solid #4a2a28; }
+    .status-pill.declined { background:#251616; color:var(--red); border: 1px solid #4a2a28; }
+    .status-pill.paid { background:#0f2420; color:var(--green); border: 1px solid #1e4a3f; }
+
+    .method-pill { display: inline-flex; align-items: center; gap: 5px; padding: 4px 10px; border-radius: 20px; font-size: 0.7rem; font-weight: 600; }
+    .method-pill.crypto { background: rgba(255,170,0,0.1); color: var(--gold); border: 1px solid rgba(255,170,0,0.3); }
+    .method-pill.bank { background: rgba(126,168,216,0.1); color: var(--blue); border: 1px solid rgba(126,168,216,0.3); }
+
+    .detail-box { background: #0a0a0a; border: 1px solid #1a1a1a; border-radius: 8px; padding: 10px 12px; font-size: 0.7rem; margin-top: 5px; }
+    .detail-box .d-row { display: flex; justify-content: space-between; padding: 3px 0; }
+    .detail-box .d-row span:first-child { color: var(--text-dim); }
+    .detail-box .d-row span:last-child { color: var(--white); font-weight: 500; word-break: break-all; text-align: right; }
+
+    .toast { position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:var(--white); color:var(--black); padding:14px 24px; border-radius:12px; font-weight:600; font-size: 0.85rem; display:none; z-index:1000; box-shadow: 0 10px 30px rgba(0,0,0,0.5); animation: slideUp 0.3s ease; }
+    .empty { padding:40px; text-align:center; color:var(--text-dim); font-size: 0.9rem; }
+    
+    @keyframes slideUp { from { opacity: 0; transform: translate(-50%, 20px); } to { opacity: 1; transform: translate(-50%, 0); } }
+
+    .refresh-btn { background: transparent; border: 1px solid var(--border); color: var(--white); padding: 8px 16px; border-radius: 10px; cursor: pointer; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; transition: 0.3s; }
+    .refresh-btn:hover { background: var(--white); color: var(--black); }
+</style>
+</head>
+<body>
+
+<!-- LOGIN GATE -->
+<div id="loginGate">
+    <h2>Admin Sign In</h2>
+    <p class="sub">Enter your Firebase admin credentials.</p>
+    <form id="loginForm">
+        <input type="email" id="adminEmail" placeholder="Email" required>
+        <input type="password" id="adminPassword" placeholder="Password" required>
+        <button type="submit" class="btn btn-block" id="loginBtn">SIGN IN</button>
+    </form>
+    <p id="loginError" style="color:var(--red); margin-top:10px; font-size:0.8rem;"></p>
+</div>
+
+<!-- ADMIN PANEL -->
+<div class="wrap hidden" id="adminPanel">
+    <div class="header">
+        <h1><i class="fas fa-shield-halved" style="color:var(--white);"></i> Tesla Admin Panel</h1>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="refresh-btn" id="refreshBtn"><i class="fas fa-arrows-rotate"></i> Refresh</button>
+            <button class="btn btn-outline" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sign Out</button>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stat"><div class="lbl">Total Users</div><div class="val" id="statUsers">0</div></div>
+        <div class="stat"><div class="lbl">Pending Approval</div><div class="val gold" id="statPending">0</div></div>
+        <div class="stat"><div class="lbl">Total Balance</div><div class="val" id="statBalance">$0</div></div>
+        <div class="stat"><div class="lbl">Car Orders</div><div class="val" id="statOrders">0</div></div>
+        <div class="stat"><div class="lbl">Pending Withdrawals</div><div class="val gold" id="statWithdrawals">0</div></div>
+    </div>
+
+    <h3><i class="fas fa-users"></i> User Management</h3>
+    <div class="table-wrap" style="overflow-x:auto;">
+        <table>
+            <thead><tr><th>User</th><th>Status</th><th>Balance</th><th>Stocks</th><th>Invested</th><th>Actions</th></tr></thead>
+            <tbody id="userTable"></tbody>
+        </table>
+    </div>
+
+    <h3><i class="fas fa-arrow-down"></i> Deposit Requests</h3>
+    <div class="table-wrap" style="overflow-x:auto;">
+        <table>
+            <thead><tr><th>User</th><th>Amount</th><th>Wallet</th><th>Requested</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="depositTable"></tbody>
+        </table>
+    </div>
+
+    <h3><i class="fas fa-arrow-up"></i> Withdrawal Requests</h3>
+    <div class="table-wrap" style="overflow-x:auto;">
+        <table>
+            <thead><tr><th>User</th><th>Amount</th><th>Method & Details</th><th>Requested</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="withdrawTable"></tbody>
+        </table>
+    </div>
+
+    <h3><i class="fas fa-bolt"></i> Stock Requests</h3>
+    <div class="table-wrap" style="overflow-x:auto;">
+        <table>
+            <thead><tr><th>User</th><th>Stock</th><th>Amount</th><th>Requested</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="planTable"></tbody>
+        </table>
+    </div>
+
+    <h3><i class="fas fa-car"></i> Car Orders & Delivery</h3>
+    <div class="table-wrap" style="overflow-x:auto;">
+        <table>
+            <thead><tr><th>User</th><th>Car</th><th>Buyer Info</th><th>Delivery Fee</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="carTable"></tbody>
+        </table>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyAueqbCcGN_LKDTd6YnPkPcWSIufFqsqwM",
+        authDomain: "fedex-4bdba.firebaseapp.com",
+        projectId: "fedex-4bdba"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+</script>
+
+<script>
+// ==================== FIRESTORE HELPERS ====================
+async function getUsers() {
+    const snap = await db.collection('users').get();
+    return snap.docs.map(d => ({ uid: d.id, ...d.data() }));
+}
+async function saveUser(user) {
+    if (!user || !user.uid) return;
+    const data = { ...user };
+    delete data.uid;
+    await db.collection('users').doc(user.uid).set(data, { merge: true });
+}
+async function getDeposits() {
+    const snap = await db.collection('depositRequests').get();
+    return snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+}
+async function saveDepositRecord(dep) {
+    const id = dep.firestoreId || String(dep.id);
+    const data = { ...dep };
+    delete data.firestoreId;
+    await db.collection('depositRequests').doc(id).set(data, { merge: true });
+}
+async function getWithdrawals() {
+    const snap = await db.collection('withdrawalRequests').get();
+    return snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+}
+async function saveWithdrawalRecord(w) {
+    const id = w.firestoreId || String(w.id);
+    const data = { ...w };
+    delete data.firestoreId;
+    await db.collection('withdrawalRequests').doc(id).set(data, { merge: true });
+}
+async function getPlanRequests() {
+    const snap = await db.collection('planRequests').get();
+    return snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+}
+async function savePlanRequestRecord(p) {
+    const id = p.firestoreId || String(p.id);
+    const data = { ...p };
+    delete data.firestoreId;
+    await db.collection('planRequests').doc(id).set(data, { merge: true });
+}
+async function getCarOrders() {
+    const snap = await db.collection('carOrders').get();
+    return snap.docs.map(d => ({ firestoreId: d.id, ...d.data() }));
+}
+async function saveCarOrderRecord(o) {
+    const id = o.firestoreId || String(o.id);
+    const data = { ...o };
+    delete data.firestoreId;
+    await db.collection('carOrders').doc(id).set(data, { merge: true });
+}
+async function getUserByUid(uid) {
+    if (!uid) return null;
+    const d = await db.collection('users').doc(uid).get();
+    if (!d.exists) return null;
+    return { uid: d.id, ...d.data() };
+}
+
+const toast = (msg) => {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    setTimeout(() => t.style.display = 'none', 3000);
+};
+
+// ==================== AUTH ====================
+document.getElementById('loginForm').onsubmit = (e) => {
+    e.preventDefault();
+    document.getElementById('loginError').textContent = '';
+    document.getElementById('loginBtn').textContent = 'Signing in...';
+    auth.signInWithEmailAndPassword(
+        document.getElementById('adminEmail').value,
+        document.getElementById('adminPassword').value
+    ).catch(err => {
+        document.getElementById('loginError').textContent = 'Incorrect email or password.';
+        document.getElementById('loginBtn').textContent = 'SIGN IN';
+    });
+};
+
+document.getElementById('logoutBtn').onclick = () => auth.signOut();
+document.getElementById('refreshBtn').onclick = () => { renderAll(); toast('🔄 Refreshed'); };
+
+auth.onAuthStateChanged(user => {
+    if (user) {
+        document.getElementById('loginGate').classList.add('hidden');
+        document.getElementById('adminPanel').classList.remove('hidden');
+        renderAll();
+    } else {
+        document.getElementById('loginGate').classList.remove('hidden');
+        document.getElementById('adminPanel').classList.add('hidden');
+    }
+});
+
+// ==================== RENDER FUNCTIONS ====================
+async function renderStats() {
+    const users = await getUsers();
+    const withdrawals = await getWithdrawals();
+    const orders = await getCarOrders();
+    document.getElementById('statUsers').textContent = users.length;
+    document.getElementById('statPending').textContent = users.filter(u => u.status === 'pending').length;
+    document.getElementById('statBalance').textContent = '$' + users.reduce((s,u) => s + (u.balance || 0), 0).toLocaleString();
+    document.getElementById('statOrders').textContent = orders.length;
+    document.getElementById('statWithdrawals').textContent = withdrawals.filter(w => w.status === 'pending').length;
+}
+
+async function renderUsers() {
+    const tbody = document.getElementById('userTable');
+    const users = await getUsers();
+    if (users.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No users yet.</td></tr>'; return; }
+    tbody.innerHTML = users.map(u => `
+        <tr>
+            <td><strong>${u.name || 'Unknown'}</strong><br><span style="font-size:0.7rem;color:#888;">${u.email}</span></td>
+            <td><span class="status-pill ${u.status}">${(u.status || 'pending').toUpperCase()}</span></td>
+            <td>$${(u.balance || 0).toFixed(2)}</td>
+            <td>$${(u.stocks || 0).toFixed(2)}</td>
+            <td>$${(u.invested || 0).toFixed(2)}</td>
+            <td class="actions">
+                ${u.status !== 'approved' ? `<button class="approve" onclick="approveUser('${u.uid}')"><i class="fas fa-check"></i> Approve</button>` : ''}
+                ${u.status !== 'blocked' ? `<button class="block" onclick="blockUser('${u.uid}')"><i class="fas fa-ban"></i> Block</button>` : ''}
+                <button class="credit" title="Add to Balance" onclick="addFunds('${u.uid}')">+B</button>
+                <button class="debit" title="Remove from Balance" onclick="removeFunds('${u.uid}')">-B</button>
+                <button class="credit btn-stocks-add" title="Add to Stocks" onclick="addStocks('${u.uid}')">+S</button>
+                <button class="debit btn-stocks-rem" title="Remove from Stocks" onclick="removeStocks('${u.uid}')">-S</button>
+                <button class="credit btn-invest-add" title="Add to Invested" onclick="addInvested('${u.uid}')">+I</button>
+                <button class="debit btn-invest-rem" title="Remove from Invested" onclick="removeInvested('${u.uid}')">-I</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function renderDeposits() {
+    const tbody = document.getElementById('depositTable');
+    const deposits = (await getDeposits()).reverse();
+    if (deposits.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No deposit requests.</td></tr>'; return; }
+    tbody.innerHTML = deposits.map(d => `
+        <tr>
+            <td><strong>${d.name || 'Unknown'}</strong><br><span style="font-size:0.7rem;color:#888;">${d.email}</span></td>
+            <td>$${Number(d.amount || 0).toFixed(2)}</td>
+            <td style="font-size:0.7rem;color:var(--green);">${d.wallet || 'BTC'}</td>
+            <td style="font-size:0.7rem;">${new Date(d.requestedAt).toLocaleString()}</td>
+            <td><span class="status-pill ${d.status}">${(d.status || 'pending').toUpperCase()}</span></td>
+            <td class="actions">
+                ${d.status === 'pending' ? `<button class="approve" onclick="approveDeposit('${d.firestoreId}')"><i class="fas fa-check"></i> Approve</button>` : ''}
+                ${d.status === 'pending' ? `<button class="block" onclick="declineDeposit('${d.firestoreId}')"><i class="fas fa-xmark"></i> Decline</button>` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function renderWithdrawals() {
+    const tbody = document.getElementById('withdrawTable');
+    const withdrawals = (await getWithdrawals()).reverse();
+    if (withdrawals.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No withdrawal requests.</td></tr>'; return; }
+
+    tbody.innerHTML = withdrawals.map(w => {
+        let detailsHtml = '';
+        if (w.method === 'crypto') {
+            detailsHtml = `
+                <div class="detail-box">
+                    <div class="d-row"><span>Wallet</span><span>${w.details?.wallet || '-'}</span></div>
+                </div>`;
+        } else {
+            detailsHtml = `
+                <div class="detail-box">
+                    <div class="d-row"><span>Bank</span><span>${w.details?.bank || '-'}</span></div>
+                    <div class="d-row"><span>Name</span><span>${w.details?.accountName || '-'}</span></div>
+                    <div class="d-row"><span>Account</span><span>${w.details?.accountNumber || '-'}</span></div>
+                </div>`;
+        }
+
+        return `
+            <tr>
+                <td><strong>${w.userName || 'Unknown'}</strong><br><span style="font-size:0.7rem;color:#888;">${w.userEmail}</span></td>
+                <td><strong>$${Number(w.amount || 0).toFixed(2)}</strong></td>
+                <td style="min-width: 200px;">
+                    <span class="method-pill ${w.method}">
+                        <i class="fas ${w.method === 'crypto' ? 'fa-bitcoin' : 'fa-university'}"></i>
+                        ${w.method === 'crypto' ? 'Bitcoin' : 'Bank'}
+                    </span>
+                    ${detailsHtml}
+                </td>
+                <td style="font-size:0.7rem;">${new Date(w.requestedAt).toLocaleString()}</td>
+                <td><span class="status-pill ${w.status}">${(w.status || 'pending').toUpperCase()}</span></td>
+                <td class="actions">
+                    ${w.status === 'pending' ? `<button class="approve" onclick="approveWithdrawal('${w.firestoreId}')"><i class="fas fa-check"></i> Mark Paid</button>` : ''}
+                    ${w.status === 'pending' ? `<button class="block" onclick="declineWithdrawal('${w.firestoreId}')"><i class="fas fa-xmark"></i> Decline</button>` : ''}
+                </td>
+            </tr>
+        `;
+    }).join('');
+}
+
+async function renderPlans() {
+    const tbody = document.getElementById('planTable');
+    const plans = (await getPlanRequests()).reverse();
+    if (plans.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No stock requests.</td></tr>'; return; }
+    tbody.innerHTML = plans.map(p => `
+        <tr>
+            <td>${p.userName || 'Unknown'}<br><span style="font-size:0.7rem;color:#888;">${p.userEmail}</span></td>
+            <td>${p.planName}</td>
+            <td>$${Number(p.amount || 0).toFixed(2)}</td>
+            <td style="font-size:0.7rem;">${new Date(p.requestedAt).toLocaleString()}</td>
+            <td><span class="status-pill ${p.status}">${(p.status || 'pending').toUpperCase()}</span></td>
+            <td class="actions">
+                ${p.status === 'pending' ? `<button class="approve" onclick="approvePlan('${p.firestoreId}')"><i class="fas fa-check"></i> Execute</button>` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function renderCarOrders() {
+    const tbody = document.getElementById('carTable');
+    const orders = (await getCarOrders()).reverse();
+    if (orders.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty">No car orders yet.</td></tr>'; return; }
+    tbody.innerHTML = orders.map(o => `
+        <tr>
+            <td><strong>${o.userName || 'Unknown'}</strong><br><span style="font-size:0.7rem;color:#888;">${o.userEmail}</span></td>
+            <td><strong>${o.carName}</strong><br><span style="font-size:0.7rem;color:#888;">$${(o.carPrice || 0).toLocaleString()}</span></td>
+            <td style="font-size:0.7rem;">
+                ${o.buyerInfo?.name || '-'}<br>
+                ${o.buyerInfo?.phone || '-'}<br>
+                ${o.buyerInfo?.address || '-'}, ${o.buyerInfo?.city || '-'} ${o.buyerInfo?.postal || ''}
+            </td>
+            <td>$${o.deliveryFee || 0}</td>
+            <td><span class="status-pill ${o.status === 'delivered' ? 'paid' : 'pending'}">${(o.status || 'pending').replace('_',' ').toUpperCase()}</span></td>
+            <td class="actions">
+                ${o.status !== 'delivered' ? `<button class="approve" onclick="markDelivered('${o.firestoreId}')"><i class="fas fa-check"></i> Mark Delivered</button>` : ''}
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function renderAll() {
+    try {
+        await renderStats();
+        await renderUsers();
+        await renderDeposits();
+        await renderWithdrawals();
+        await renderPlans();
+        await renderCarOrders();
+    } catch (err) {
+        console.error('Render error:', err);
+    }
+}
+
+// ==================== USER ACTIONS ====================
+async function approveUser(uid) {
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.status = 'approved';
+    await saveUser(u);
+    toast('✅ User approved.');
+    renderAll();
+}
+async function blockUser(uid) {
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.status = 'blocked';
+    await saveUser(u);
+    toast('🚫 User blocked.');
+    renderAll();
+}
+async function addFunds(uid) {
+    const amt = parseFloat(prompt('Amount to ADD to Balance (USD):', '100'));
+    if (!amt || amt <= 0) return;
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.balance = (u.balance || 0) + amt;
+    await saveUser(u);
+    toast(`💰 Added $${amt} to balance.`);
+    renderAll();
+}
+async function removeFunds(uid) {
+    const amt = parseFloat(prompt('Amount to REMOVE from Balance (USD):', '50'));
+    if (!amt || amt <= 0) return;
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.balance = Math.max(0, (u.balance || 0) - amt);
+    await saveUser(u);
+    toast(`➖ Removed $${amt} from balance.`);
+    renderAll();
+}
+async function addStocks(uid) {
+    const amt = parseFloat(prompt('Amount to ADD to STOCKS (USD):', '100'));
+    if (!amt || amt <= 0) return;
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.stocks = (u.stocks || 0) + amt;
+    await saveUser(u);
+    toast(`💰 Added $${amt} to stocks.`);
+    renderAll();
+}
+async function removeStocks(uid) {
+    const amt = parseFloat(prompt('Amount to REMOVE from STOCKS (USD):', '50'));
+    if (!amt || amt <= 0) return;
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.stocks = Math.max(0, (u.stocks || 0) - amt);
+    await saveUser(u);
+    toast(`➖ Removed $${amt} from stocks.`);
+    renderAll();
+}
+async function addInvested(uid) {
+    const amt = parseFloat(prompt('Amount to ADD to INVESTED (USD):', '100'));
+    if (!amt || amt <= 0) return;
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.invested = (u.invested || 0) + amt;
+    await saveUser(u);
+    toast(`💰 Added $${amt} to invested.`);
+    renderAll();
+}
+async function removeInvested(uid) {
+    const amt = parseFloat(prompt('Amount to REMOVE from INVESTED (USD):', '50'));
+    if (!amt || amt <= 0) return;
+    const u = await getUserByUid(uid);
+    if (!u) return;
+    u.invested = Math.max(0, (u.invested || 0) - amt);
+    await saveUser(u);
+    toast(`➖ Removed $${amt} from invested.`);
+    renderAll();
+}
+
+// ==================== DEPOSIT ACTIONS ====================
+async function approveDeposit(firestoreId) {
+    const dep = (await getDeposits()).find(d => d.firestoreId === firestoreId);
+    if (!dep) return;
+    const u = await getUserByUid(dep.userUid);
+    if (!u) { toast('❌ User not found.'); return; }
+    u.balance = (u.balance || 0) + Number(dep.amount);
+    await saveUser(u);
+    dep.status = 'approved';
+    await saveDepositRecord(dep);
+    toast(`✅ Credited $${dep.amount} to ${u.name}.`);
+    renderAll();
+}
+async function declineDeposit(firestoreId) {
+    const dep = (await getDeposits()).find(d => d.firestoreId === firestoreId);
+    if (!dep) return;
+    dep.status = 'declined';
+    await saveDepositRecord(dep);
+    toast('🚫 Deposit declined.');
+    renderAll();
+}
+
+// ==================== WITHDRAWAL ACTIONS ====================
+async function approveWithdrawal(firestoreId) {
+    const w = (await getWithdrawals()).find(x => x.firestoreId === firestoreId);
+    if (!w) return;
+    const confirmMsg = `Mark this withdrawal as PAID?\n\nUser: ${w.userName}\nAmount: $${Number(w.amount).toFixed(2)}\nMethod: ${w.method}\n\n(This means you have sent the money to the user.)`;
+    if (!confirm(confirmMsg)) return;
+
+    w.status = 'paid';
+    w.paidAt = new Date().toISOString();
+    await saveWithdrawalRecord(w);
+    toast(`✅ Marked $${w.amount} withdrawal as PAID.`);
+    renderAll();
+}
+async function declineWithdrawal(firestoreId) {
+    const w = (await getWithdrawals()).find(x => x.firestoreId === firestoreId);
+    if (!w) return;
+    if (!confirm(`Decline this withdrawal?\n\nThe $${Number(w.amount).toFixed(2)} will be REFUNDED to ${w.userName}'s balance.`)) return;
+
+    // Refund the user's balance
+    const u = await getUserByUid(w.userUid);
+    if (u) {
+        u.balance = (u.balance || 0) + Number(w.amount);
+        await saveUser(u);
+    }
+
+    w.status = 'declined';
+    w.declinedAt = new Date().toISOString();
+    await saveWithdrawalRecord(w);
+    toast(`🚫 Withdrawal declined. $${w.amount} refunded to ${w.userName}.`);
+    renderAll();
+}
+
+// ==================== PLAN ACTIONS ====================
+async function approvePlan(firestoreId) {
+    const p = (await getPlanRequests()).find(x => x.firestoreId === firestoreId);
+    if (!p) return;
+    const u = await getUserByUid(p.userUid);
+    if (!u) { toast('❌ User not found.'); return; }
+    if ((u.balance || 0) < p.amount) { toast('❌ User does not have enough balance.'); return; }
+    u.balance -= p.amount;
+    u.stocks = (u.stocks || 0) + p.amount;
+    await saveUser(u);
+    p.status = 'approved';
+    await savePlanRequestRecord(p);
+    toast(`✅ Stock executed for ${u.name}.`);
+    renderAll();
+}
+
+// ==================== CAR ACTION ====================
+async function markDelivered(firestoreId) {
+    const o = (await getCarOrders()).find(x => x.firestoreId === firestoreId);
+    if (!o) return;
+    o.status = 'delivered';
+    await saveCarOrderRecord(o);
+    toast(`✅ ${o.carName} marked as delivered.`);
+    renderAll();
+}
+
+// Auto-refresh every 30 seconds
+setInterval(() => {
+    if (!document.getElementById('adminPanel').classList.contains('hidden')) {
+        renderAll();
+    }
+}, 30000);
+</script>
+</body>
+</html>
